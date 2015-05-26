@@ -1,15 +1,12 @@
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/todo-list');
+function itemSchema(mongoose){
+	var Schema = mongoose.Schema;
 
-var Schema = mongoose.Schema;
+	return new Schema({
+	  item:   String,
+	  date: { type: Date, default: Date.now },
+	  done: { type:Boolean, default: 0}
+	});
 
-var itemSchema = new Schema({
-  item:   String,
-  date: { type: Date, default: Date.now },
-  done: Boolean
-});
+}
 
-var Item = mongoose.model('Item', itemSchema);
-
-
-exports.Item = Item;
+exports.itemSchema = itemSchema;
