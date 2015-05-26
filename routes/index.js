@@ -1,18 +1,29 @@
 var express = require('express');
 var router = express.Router();
-var Item = require('../model/item.js').Item;
-
-
+var Item = require('../model').Item;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+	Item.find()
+		.sort({
+			date: -1
+		})
+		.exec(function(err, items) {
+			if (err) console.log(err);
+
+			res.render('index', {
+				items: items
+			});
+		});
 });
 
 router.post('/add', function(req, res, next) {
 	var todo = req.body.addItem;
-	todo.save(function (err, todo) {
+	
+	var newitem = new Item({ item: todo });
+	newitem.save(function (err, newitem) {
 		if (err) return console.error(err);
+		res.redirect('/');
 	});
 });
 
